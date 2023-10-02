@@ -672,7 +672,9 @@ export class Client<TDocuments extends PrismicDocument = PrismicDocument> {
 	): Promise<TDocument> {
 		const actualParams = { ...params };
 		if (!(params && params.page) && !params?.pageSize) {
-			actualParams.pageSize = this.defaultParams?.pageSize ?? 1;
+			actualParams.pageSize = this.defaultParams && this.defaultParams.pageSize !== undefined
+			? this.defaultParams.pageSize
+			: 1;
 		}
 		const url = await this.buildQueryURL(actualParams);
 		const result = await this.fetch<Query<TDocument>>(url, params);
